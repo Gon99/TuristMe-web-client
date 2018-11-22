@@ -18,7 +18,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('api/user', function(){
-	$role = Role::where('name','manager')->get();
-	dd($role);
-});
+Route::apiResource('user', 'UserController');
+
+Route::apiResource('password', 'PasswordController');
+
+Route::apiResource('categories', 'CategoryController');
+

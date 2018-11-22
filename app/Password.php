@@ -8,9 +8,15 @@ class Password extends Model
 {
 
 	protected $table = 'passwords';
+	protected $fillable = ['title', 'password'];
 
-    public function comments()
+    public function users()
     {
-    	return $this->hasMany('')
+    	return $this->belongsTo('\App\User');
+    }
+
+    public function categories()
+    {
+    	return $this->belongsTo('\App\Category');
     }
 }

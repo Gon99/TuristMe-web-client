@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\GPASS;
+use App\Category;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
-class GPASSController extends Controller
+class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -35,7 +36,11 @@ class GPASSController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $category = new Category();
+
+        $category->name = $request->name;
+
+        $category->save();
     }
 
     /**
