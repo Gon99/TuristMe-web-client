@@ -8,13 +8,14 @@ class User extends Model
 {
 
     protected $table = 'users';
-    protected $fillable = ['name', 'email', 'password'];
+    protected $fillable = ['name', 'email', 'password','role_id'];      //Asignación masiva, si te deja añadir el campo a la tabla de la BD.
+    public $timestamps = false;
     //desde las rutas la variable $user es la misma que $fillable?
     //protected $hidden = ['password'];
 
     public function role()
     {
-        return $this->belongsTo('App\Role');
+        return $this->belongsTo('\App\Role');
     }
 
     public function categories()

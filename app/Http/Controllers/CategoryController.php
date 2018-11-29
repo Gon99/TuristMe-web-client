@@ -39,6 +39,7 @@ class CategoryController extends Controller
         $category = new Category();
 
         $category->name = $request->name;
+        $category->user_id = $request->user_id;
 
         $category->save();
     }
@@ -49,9 +50,17 @@ class CategoryController extends Controller
      * @param  \App\GPASS  $gPASS
      * @return \Illuminate\Http\Response
      */
-    public function show(GPASS $gPASS)
+    public function show(Category $category)
     {
-        //
+        $category = Category::where('user_id', $category->user_id);
+
+        return response()->json([
+                'Categorias' => $category
+            ]);
+
+        /*foreach ($category as $category) {
+            
+        }*/
     }
 
     /**

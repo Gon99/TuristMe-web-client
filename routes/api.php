@@ -22,5 +22,6 @@ Route::apiResource('user', 'UserController');
 
 Route::apiResource('password', 'PasswordController');
 
-Route::apiResource('categories', 'CategoryController');
+Route::apiResource('category', 'CategoryController');
 
+Route::post('login', 'UserController@login');

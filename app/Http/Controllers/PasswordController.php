@@ -40,8 +40,10 @@ class PasswordController extends Controller
 
         $password->title = $request->title;
         $password->password = $request->password;
+        $password->user_id = $request->user_id;
+        $password->category_id = $request->category_id;
 
-        $user->save();
+        $password->save();
     }
 
     /**
