@@ -41,13 +41,16 @@ class UserController extends Controller
 
         $user->name = $request->name;
         $user->email = $request->email;
-        if (strlen($user->password) > 8) {
+        if (strlen($request->password) > 8)
+        {
             $user->password = $request->password;
-        } else {
-            var_dump('La contraseña tiene que tener 8 carácteres como mínimo');
-            exit();
+        } else 
+        {
+            return response()->json([
+                'ERROR' => 'The password must have more than eight characters'
+            ]);
         }
-        $user->role_id = $request->role_id;
+        $user->role_id = 2;
 
         $user->save();
     }
@@ -55,13 +58,13 @@ class UserController extends Controller
     public function login()
     {
         $key = '7kvP3yy3b4SGpVz6uSeSBhBEDtGzPb2n';
-        $user = User::where('email', $_POST['email'])->get();       //En vez de ->get podemos poner ->first ya que el email es único te devuelve ese objeto(user) con ese email
+        $user = User::where('email', $_POST['email'])->first();       //En vez de ->get podemos poner ->first ya que el email es único te devuelve ese objeto(user) con ese email
 
-        foreach ($user as $user) {
-            echo $user->password;
-        }
+        // foreach ($user as $user) {
+        //     echo $user->password;
+        // }
 
-        if ($user->password == $_POST['password']) 
+        if ($user->password == $_POST['password'] && $user->name == $_POST['name']) 
         {
             $tokenParams = [        //Meter los datos que identifican al usuario
                 'name' => $_POST['name'],
@@ -75,7 +78,9 @@ class UserController extends Controller
             ]);
         }else 
         {
-            echo 'Usuario o contraseña inválida';
+            return response()->json([
+                'ERROR' => 'Invalid username or password'
+            ]);
         }
     }
 

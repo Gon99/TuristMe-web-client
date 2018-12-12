@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 
 class CategoryController extends Controller
 {
@@ -52,15 +53,12 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        $category = Category::where('user_id', $category->user_id);
+        $categories = DB::table('categories')->where('user_id', $category->user_id)->get();
 
-        return response()->json([
-                'Categorias' => $category
-            ]);
+        foreach ($categories as $categories => $category) {
+            var_dump($value->name);
+        }
 
-        /*foreach ($category as $category) {
-            
-        }*/
     }
 
     /**
