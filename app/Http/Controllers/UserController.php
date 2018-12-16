@@ -36,17 +36,31 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        //header('Access-Control-Allow-Origin: *');
         $user = new User();
 
-        $user->name = $request->name;
+        $user->name = str_replace(' ', '', $request->name);
         $user->email = $request->email;
+
+        /*if ($user->email != $_POST['email']) {
+            var_dump($user->email);
+            var_dump($_POST['email']);
+            exit();
+            
+        }else
+        {
+            return response()->json([
+                'ERROR' => 'The email is in use', 400 
+            ]);
+        }*/
+        
         if (strlen($request->password) > 8)
         {
             $user->password = $request->password;
         } else 
         {
             return response()->json([
-                'ERROR' => 'The password must have more than eight characters'
+                'ERROR' => 'The password must have more than eight characters', 400.7
             ]);
         }
         $user->role_id = 2;
