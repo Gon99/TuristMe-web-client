@@ -17,7 +17,6 @@ class LoginController extends Controller
 	public function login()
     {
     	
-    	//$token = $headers['Authorization'];
         $key = '7kvP3yy3b4SGpVz6uSeSBhBEDtGzPb2n';
         $user = User::where('email', $_POST['email'])->first();       //En vez de ->get podemos poner ->first ya que el email es único te devuelve ese objeto(user) con ese email
         if (empty($_POST['email']) or empty($_POST['password'])) {
@@ -45,7 +44,7 @@ class LoginController extends Controller
         }
     }
 
-    public function userToken()
+    /*public function userToken()
     {
 
     	$key = '7kvP3yy3b4SGpVz6uSeSBhBEDtGzPb2n';
@@ -84,5 +83,5 @@ class LoginController extends Controller
     	}
 
     	exit();
-    }
+    }*/
 }

@@ -37,12 +37,27 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $category = new Category();
+        $token = $headers['Authorization'];
 
-        $category->name = $request->name;
-        $category->user_id = $request->user_id;
+        if (!empty($_POST('Authorization')))
+        {
+            $key = '7kvP3yy3b4SGpVz6uSeSBhBEDtGzPb2n';
+            $decodedToken = JWT::decode($token, $key, array('HS256'));
 
-        $category->save();
+            $category = new Category();
+
+            $category->name = $request->name;
+            $category->user_id = $request->user_id;
+
+            $category->save();
+        } else
+        {
+            return response()->json([
+                'ERROR' => 'Invalid Token', 401
+            ]);
+        }
+        
+        
     }
 
     /**
