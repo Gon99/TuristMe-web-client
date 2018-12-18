@@ -25,7 +25,7 @@ class LoginController extends Controller
     		]);
     	}
 
-        if ($user->password == $_POST['password']) 
+        if ($user->password == $_POST['password'] && $user->email == $_POST['email']) 
         {
             $tokenParams = [        //Meter los datos que identifican al usuario
                 'password' => $_POST['password'],
@@ -39,7 +39,7 @@ class LoginController extends Controller
         }else 
         {
             return response()->json([
-                'ERROR' => 'Invalid username or password', 400
+                'ERROR' => 'Invalid email or password', 400
             ]);
         }
     }

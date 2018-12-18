@@ -37,6 +37,9 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
+        $headers = getallheaders();
+        var_dump($headers);
+        exit();
         $token = $headers['Authorization'];
 
         if (!empty($_POST('Authorization')))
