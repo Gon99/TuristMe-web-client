@@ -6,6 +6,7 @@ use App\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
+use \Firebase\JWT\JWT;
 
 class CategoryController extends Controller
 {
@@ -38,14 +39,21 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $headers = getallheaders();
-        var_dump($headers);
-        exit();
         $token = $headers['Authorization'];
+        $key = '7kvP3yy3b4SGpVz6uSeSBhBEDtGzPb2n';
 
-        if (!empty($_POST('Authorization')))
+        if (isset($_POST['Authorization']))
+        {
+            return response()->json([
+                'ERROR' => 'Invalid Token', 401
+            ]);  
+              
+        } else
         {
             $key = '7kvP3yy3b4SGpVz6uSeSBhBEDtGzPb2n';
             $decodedToken = JWT::decode($token, $key, array('HS256'));
+            var_dump($decodedToken);
+            exit();
 
             $category = new Category();
 
@@ -53,11 +61,7 @@ class CategoryController extends Controller
             $category->user_id = $request->user_id;
 
             $category->save();
-        } else
-        {
-            return response()->json([
-                'ERROR' => 'Invalid Token', 401
-            ]);
+            
         }
         
         

@@ -37,35 +37,43 @@ class UserController extends Controller
     public function store(Request $request)
     {
         //header('Access-Control-Allow-Origin: *');
-        $user = new User();
 
-        $user->name = str_replace(' ', '', $request->name);
-        $user->email = $request->email;
+        if (empty($request->name) || empty($request->password) || empty($request->email)) {
+            return response()->json([
+                'ERROR' => 'Some fields are null'
+            ]);
+        } else {
+            $user = new User();
 
-        /*if ($user->email != $_POST['email']) {
-            var_dump($user->email);
-            var_dump($_POST['email']);
-            exit();
+            $user->name = str_replace(' ', '', $request->name);
+            $user->email = $request->email;
+
+            /*if ($user->email != $_POST['email']) {
+                var_dump($user->email);
+                var_dump($_POST['email']);
+                exit();
             
-        }else
-        {
-            return response()->json([
-                'ERROR' => 'The email is in use', 400 
-            ]);
-        }*/
+            }else
+            {
+                return response()->json([
+                    'ERROR' => 'The email is in use', 400 
+                ]);
+            }*/
         
-        if (strlen($request->password) > 8)
-        {
-            $user->password = $request->password;
-        } else 
-        {
-            return response()->json([
-                'ERROR' => 'The password must have more than eight characters', 400.7
-            ]);
-        }
-        $user->role_id = 2;
+            if (strlen($request->password) > 7)
+            {
+                $user->password = $request->password;
+            } else 
+            {
+                return response()->json([
+                    'ERROR' => 'The password must have more than seven characters', 400.7
+                ]);
+            }
+            $user->role_id = 2;
 
-        $user->save();
+            $user->save();
+        }
+        
     }
 
     /**
