@@ -8,17 +8,14 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use \Firebase\JWT\JWT;
 
-	/**
-	 * 
-	 */
 class LoginController extends Controller
 {
 
 	public function login()
     {
-    	
         $key = '7kvP3yy3b4SGpVz6uSeSBhBEDtGzPb2n';
-        $user = User::where('email', $_POST['email'])->first();       //En vez de ->get podemos poner ->first ya que el email es único te devuelve ese objeto(user) con ese email
+        $user = User::where('email', $_POST['email'])->first();
+
         if (empty($_POST['email']) or empty($_POST['password'])) {
     		return response()->json([
     			'ERROR' => 'The fields are empty', 400
@@ -27,11 +24,13 @@ class LoginController extends Controller
 
         if ($user->password == $_POST['password'] && $user->email == $_POST['email']) 
         {
-            $tokenParams = [        //Meter los datos que identifican al usuario
+ 
+            $tokenParams = [        
                 'password' => $_POST['password'],
                 'email' => $_POST['email'],
                 'random' => time()
             ];
+
             $token = JWT::encode($tokenParams, $key);
             return response()->json([
                 'token' => $token,

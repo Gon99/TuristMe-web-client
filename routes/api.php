@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Http\Request;
-use App\Role;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,12 +19,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::apiResource('user', 'UserController');
 
-Route::apiResource('password', 'PasswordController');
+Route::apiResource('role', 'RoleController');
 
-Route::apiResource('category', 'CategoryController');
+Route::apiResource('place', 'PlaceController');
 
 Route::post('login', 'LoginController@login');
-
-Route::get('checkUser', 'LoginController@userLogged');
-
-Route::post('token', 'LoginController@userToken');

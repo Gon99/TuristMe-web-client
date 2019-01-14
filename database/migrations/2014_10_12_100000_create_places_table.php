@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePasswordsTable extends Migration
+class CreatePlacesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,16 @@ class CreatePasswordsTable extends Migration
      */
     public function up()
     {
-        Schema::create('passwords', function (Blueprint $table) {
+        Schema::create('places', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('title');
-            $table->string('password');
+            $table->string('name');
+            $table->string('description');
+            $table->integer('start_date');
+            $table->integer('end_date');
+            $table->integer('x_coordinate');
+            $table->integer('y_coordinate');
             $table->integer('user_id');
-            $table->integer('category_id');
+            $table->timestamps();
         });
     }
 
@@ -29,6 +33,6 @@ class CreatePasswordsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('passwords');
+        Schema::dropIfExists('places');
     }
 }

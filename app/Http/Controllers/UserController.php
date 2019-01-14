@@ -47,18 +47,6 @@ class UserController extends Controller
 
             $user->name = str_replace(' ', '', $request->name);
             $user->email = $request->email;
-
-            /*if ($user->email != $_POST['email']) {
-                var_dump($user->email);
-                var_dump($_POST['email']);
-                exit();
-            
-            }else
-            {
-                return response()->json([
-                    'ERROR' => 'The email is in use', 400 
-                ]);
-            }*/
         
             if (strlen($request->password) > 7)
             {
@@ -72,6 +60,9 @@ class UserController extends Controller
             $user->role_id = 2;
 
             $user->save();
+            return response()->json([
+                'CORRECT' => 'The user has been register correctly', 200
+            ]);
         }
         
     }
