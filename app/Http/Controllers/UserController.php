@@ -36,8 +36,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //header('Access-Control-Allow-Origin: *');
-
+        
         if (empty($request->name) || empty($request->password) || empty($request->email)) {
             return response()->json([
                 'ERROR' => 'Some fields are null'

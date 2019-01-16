@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Place;
+use App\User;
 use Illuminate\Http\Request;
 use \Firebase\JWT\JWT;
 
@@ -15,7 +16,32 @@ class PlaceController extends Controller
      */
     public function index()
     {
-        //
+
+        $header = getallheaders();
+        $key = '7kvP3yy3b4SGpVz6uSeSBhBEDtGzPb2n';
+
+        if ($header['Authorization'] != null) 
+        {
+            $places = Place::all();
+            if (count($places) != 0) {
+                foreach ($places as $key => $place) {
+                    return response()->json([
+                        'places' => $place
+                    ]);
+                    //Lo hago con var_dump??
+                }
+            } else {
+                return response()->json([
+                    'ERROR' => 'There are no places created'
+                ]);
+            }
+            var_dump(count($places));  
+        }
+        else {
+            return response()->json([
+                'ERROR' => 'Dont have enough permission', 403
+            ]);
+        }
     }
 
     /**
@@ -31,14 +57,33 @@ class PlaceController extends Controller
         
         if ($header['Authorization'] != null) 
         {
-            try {
-                    $decodedToken = JWT::decode($header['Authorization'], $key, array('HS256'));
-                    var_dump($decodedToken);
-                    exit();
-                } catch (Exception $e) {
-                    
-                }    
-        } else {
+            $userParams = JWT::decode($header['Authorization'], $key, array('HS256'));
+
+            if ($user = User::where('email', $userParams->email)->first()) 
+            {
+                $place = new Place();
+                if (empty($request->name) || empty($request->start_date) || empty($request->end_date)) 
+                {
+                    return response()->json([
+                        'ERROR' => 'Some fields are empty'
+                    ]);    
+                }
+                else {
+                    $place->name = $request->name;
+                    $place->description = $request->description;
+                    $place->start_date = $request->start_date;
+                    $place->end_date = $request->end_date;
+                    $place->x_coordinate = $request->x_coordinate;
+                    $place->y_coordinate = $request->y_coordinate;
+                    $place->user_id = $user->id;
+                    $place->save();  
+                }   
+            }else{
+                return response()->json([
+                    'ERROR' => 'Token corrupt'
+                ]);
+            } 
+        }else {
             return response()->json([
                 'ERROR' => 'Dont have enough permission'
             ]);
