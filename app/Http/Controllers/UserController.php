@@ -36,7 +36,6 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        
         if (empty($request->name) || empty($request->password) || empty($request->email)) {
             return response()->json([
                 'ERROR' => 'Some fields are null'

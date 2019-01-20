@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Http\Controllers;
 
 use App\User;
@@ -10,35 +9,37 @@ use \Firebase\JWT\JWT;
 
 class LoginController extends Controller
 {
-
 	public function login()
     {
         $key = '7kvP3yy3b4SGpVz6uSeSBhBEDtGzPb2n';
-        $user = User::where('email', $_POST['email'])->first();
 
-        if (empty($_POST['email']) or empty($_POST['password'])) {
+        if (empty($_POST['email']) or empty($_POST['password'])) 
+        {
     		return response()->json([
-    			'ERROR' => 'The fields are empty', 400
+    			'ERROR' => 'Some fields are empty', 400
     		]);
-    	}
-
-        if ($user->password == $_POST['password'] && $user->email == $_POST['email']) 
+    	} 
+        else 
         {
- 
-            $tokenParams = [        
-                'password' => $_POST['password'],
-                'email' => $_POST['email'],
-                'random' => time()
-            ];
+            $users = User::all();
+            foreach ($users as $key => $user)
+            {
+                if ($user->password == $_POST['password'] && $user->email == $_POST['email']) 
+                {
+                    $tokenParams = [
+                        'id' => $user->id,        
+                        'password' => $_POST['password'],
+                        'email' => $_POST['email']
+                    ];
 
-            $token = JWT::encode($tokenParams, $key);
+                    $token = JWT::encode($tokenParams, $key);
+                    return response()->json([
+                        'token' => $token
+                    ]);
+                }
+            }
             return response()->json([
-                'token' => $token,
-            ]);
-        }else 
-        {
-            return response()->json([
-                'ERROR' => 'Invalid email or password', 400
+                'ERROR' => 'The user specified doesnt exist', 404
             ]);
         }
     }
