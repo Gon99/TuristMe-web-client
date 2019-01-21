@@ -27,6 +27,11 @@ class PlaceController extends Controller
             foreach ($places as $key => $place) {
                 if (count($places) != 0 && $place->user_id == $userParams->id) {
                     return $places;
+                }else
+                {
+                    return response()->json([
+                        'ERROR' => 'Dont have any place created yet'
+                    ]);
                 }
             }
         }
@@ -169,6 +174,10 @@ class PlaceController extends Controller
                         $place->delete();
                         return response()->json([
                             'SUCCESS' => 'The place has been deleted correctly', 200
+                        ]);
+                    } else {
+                        return response()->json([
+                            'ERROR' => 'Dont have enough permission', 403
                         ]);
                     }
                 }

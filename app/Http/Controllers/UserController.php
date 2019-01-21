@@ -45,7 +45,16 @@ class UserController extends Controller
 
             $user->name = str_replace(' ', '', $request->name);
             $user->email = $request->email;
-        
+
+            $users = User::where('email', $request->email)->get();
+            foreach ($users as $key => $value) {
+                if ($request->email == $value->email) {
+                    return response()->json([
+                        'ERROR' => 'The email is in use'
+                    ]);
+                }
+            }
+
             if (strlen($request->password) > 7)
             {
                 $user->password = $request->password;
@@ -61,8 +70,7 @@ class UserController extends Controller
             return response()->json([
                 'CORRECT' => 'The user has been register correctly', 200
             ]);
-        }
-        
+        } 
     }
 
     /**
