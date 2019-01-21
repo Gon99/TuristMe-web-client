@@ -21,10 +21,10 @@ class LoginController extends Controller
     	} 
         else 
         {
-            $users = User::all();
-            foreach ($users as $key => $user)
+            $user = User::where('email', $_POST['email'])->first();
+            if (!empty($user)) 
             {
-                if ($user->password == $_POST['password'] && $user->email == $_POST['email']) 
+                if ($user->password == $_POST['password']) 
                 {
                     $tokenParams = [
                         'id' => $user->id,        
@@ -34,13 +34,18 @@ class LoginController extends Controller
 
                     $token = JWT::encode($tokenParams, $key);
                     return response()->json([
-                        'token' => $token
+                        'token' => $token, 200
+                    ]);
+                } else {
+                    return response()->json([
+                        'ERROR' => 'The specified password doesnt exist', 404
                     ]);
                 }
+            }else {
+                return response([
+                    'ERROR' => 'The specified email doesnt exist', 404
+                ]);
             }
-            return response()->json([
-                'ERROR' => 'The user specified doesnt exist', 404
-            ]);
         }
     }
 }

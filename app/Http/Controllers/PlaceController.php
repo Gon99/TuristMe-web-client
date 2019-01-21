@@ -50,9 +50,11 @@ class PlaceController extends Controller
 
         if ($header['Authorization'] != null) 
         {
+            
+            //var_dump($header['Authorization']);exit;
             $userParams = JWT::decode($header['Authorization'], $key, array('HS256'));
-            var_dump($userParams);
-            exit();
+
+            
             if ($user = User::where('email', $userParams->email)->first()) 
             {
                 $place = new Place();
