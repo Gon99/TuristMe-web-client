@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use \Firebase\JWT\JWT;
 
 class UserController extends Controller
 {
@@ -38,7 +39,7 @@ class UserController extends Controller
     {
         if (empty($request->name) || empty($request->password) || empty($request->email)) {
             return response()->json([
-                'ERROR' => 'Some fields are null'
+                'MESSAGE' => 'Some fields are null', 401
             ]);
         } else {
             $user = new User();
@@ -50,7 +51,7 @@ class UserController extends Controller
             foreach ($users as $key => $value) {
                 if ($request->email == $value->email) {
                     return response()->json([
-                        'ERROR' => 'The email is in use'
+                        'MESSAGE' => 'The email is in use'
                     ]);
                 }
             }
@@ -61,14 +62,14 @@ class UserController extends Controller
             } else 
             {
                 return response()->json([
-                    'ERROR' => 'The password must have more than seven characters', 400.7
+                    'MESSAGE' => 'The password must have more than seven characters', 411
                 ]);
             }
             $user->role_id = 2;
 
             $user->save();
             return response()->json([
-                'CORRECT' => 'The user has been register correctly', 200
+                'MESSAGE' => 'The user has been register correctly', 200
             ]);
         } 
     }
@@ -113,8 +114,35 @@ class UserController extends Controller
      * @param  \App\GPASS  $gPASS
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)     //$user es el usuario que pasamos por parametro en POSTMAN, {en las rutas} entre corchetes pasamos el id del usuario que queremos borrar
+    public function destroy(User $user)     
     {
-        $user->delete();
+        $header = getallheaders();
+
+        if ($header['Authorization'] != null) 
+        {
+            var_dump("antes del try");
+            try {
+                var_dump("try");
+                $userLogged = JWT::decode($header['Authorization'], $this->key, array('HS256'));
+                if ($userLogged->id == 1) 
+                {
+                    $user->delete();
+                    return response()->json([
+                        'MESSAGE' => 'The user has been deleted correctly', 200
+                    ]);
+                } else {
+                    return response()->json([
+                        'MESSAGE' => 'Dont have enough permission', 403
+                    ]);
+                }
+            } 
+            catch (Exception $e) 
+            {
+                var_dump("catch");
+                return response()->json([
+                    'MESSAGE' => 'Dont have enough permission', 403
+                ]);
+            }
+        }
     }
 }

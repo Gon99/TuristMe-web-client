@@ -11,4 +11,6 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+
+    protected $key = '7kvP3yy3b4SGpVz6uSeSBhBEDtGzPb2n';
 }

@@ -9,14 +9,12 @@ use \Firebase\JWT\JWT;
 
 class LoginController extends Controller
 {
-	public function loginApp()
+	public function login()
     {
-        $key = '7kvP3yy3b4SGpVz6uSeSBhBEDtGzPb2n';
-
         if (empty($_POST['email']) or empty($_POST['password'])) 
         {
     		return response()->json([
-    			'ERROR' => 'Some fields are empty', 400
+    			'MESSAGE' => 'Some fields are empty', 411
     		]);
     	} 
         else 
@@ -32,18 +30,18 @@ class LoginController extends Controller
                         'email' => $_POST['email']
                     ];
 
-                    $token = JWT::encode($tokenParams, $key);
+                    $token = JWT::encode($tokenParams, $this->key);
                     return response()->json([
-                        'token' => $token, 200
+                        'MESSAGE' => $token, 200
                     ]);
                 } else {
                     return response()->json([
-                        'ERROR' => 'The specified password doesnt exist', 404
+                        'MESSAGE' => 'The specified password doesnt exist', 403
                     ]);
                 }
             }else {
                 return response([
-                    'ERROR' => 'The specified email doesnt exist', 404
+                    'MESSAGE' => 'The specified email doesnt exist', 403
                 ]);
             }
         }
