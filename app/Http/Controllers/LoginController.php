@@ -9,7 +9,7 @@ use \Firebase\JWT\JWT;
 
 class LoginController extends Controller
 {
-	public function login()
+	public function loginApp()
     {
         $key = '7kvP3yy3b4SGpVz6uSeSBhBEDtGzPb2n';
 
@@ -24,7 +24,7 @@ class LoginController extends Controller
             $user = User::where('email', $_POST['email'])->first();
             if (!empty($user)) 
             {
-                if ($user->password == $_POST['password']) 
+                if (decrypt($user->password) == $_POST['password']) 
                 {
                     $tokenParams = [
                         'id' => $user->id,        

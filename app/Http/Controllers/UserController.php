@@ -57,7 +57,7 @@ class UserController extends Controller
 
             if (strlen($request->password) > 7)
             {
-                $user->password = $request->password;
+                $user->password = encrypt($request->password);
             } else 
             {
                 return response()->json([

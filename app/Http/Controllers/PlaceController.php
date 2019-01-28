@@ -55,10 +55,7 @@ class PlaceController extends Controller
 
         if ($header['Authorization'] != null) 
         {
-            
-            //var_dump($header['Authorization']);exit;
             $userParams = JWT::decode($header['Authorization'], $key, array('HS256'));
-
             
             if ($user = User::where('email', $userParams->email)->first()) 
             {
@@ -177,7 +174,7 @@ class PlaceController extends Controller
                         ]);
                     } else {
                         return response()->json([
-                            'ERROR' => 'Dont have enough permission', 403
+                            'ERROR' => 'Dont have enough permission', 403 
                         ]);
                     }
                 }
