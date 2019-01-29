@@ -38,7 +38,7 @@ class UserController extends Controller
     {
         if (empty($request->name) || empty($request->password) || empty($request->email)) {
             return response()->json([
-                'ERROR' => 'Some fields are null'
+                'MESSAGE' => 'Some fields are null'
             ]);
         } else {
             $user = new User();
@@ -50,7 +50,7 @@ class UserController extends Controller
             foreach ($users as $key => $value) {
                 if ($request->email == $value->email) {
                     return response()->json([
-                        'ERROR' => 'The email is in use'
+                        'MESSAGE' => 'The email is in use', 401
                     ]);
                 }
             }
@@ -61,14 +61,14 @@ class UserController extends Controller
             } else 
             {
                 return response()->json([
-                    'ERROR' => 'The password must have more than seven characters', 400.7
+                    'MESSAGE' => 'The password must have more than seven characters', 401
                 ]);
             }
             $user->role_id = 2;
 
             $user->save();
             return response()->json([
-                'CORRECT' => 'The user has been register correctly', 200
+                'MESSAGE' => 'The user has been register correctly', 200
             ]);
         } 
     }
