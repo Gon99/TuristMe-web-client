@@ -21,7 +21,7 @@ class PlaceController extends Controller
 
         if ($header['Authorization'] != null) 
         {
-            $userParams = JWT::decode($header['Authorization'], $key, array('HS256'));
+            $userParams = JWT::decode($header['Authorization'], $this->key, array('HS256'));
             $places = Place::all();
 
             foreach ($places as $key => $place) {
@@ -51,14 +51,10 @@ class PlaceController extends Controller
     public function store(Request $request)
     {
         $header = getallheaders();
-        $key = '7kvP3yy3b4SGpVz6uSeSBhBEDtGzPb2n';
 
         if ($header['Authorization'] != null) 
         {
-            
-            //var_dump($header['Authorization']);exit;
-            $userParams = JWT::decode($header['Authorization'], $key, array('HS256'));
-
+            $userParams = JWT::decode($header['Authorization'], $this->key, array('HS256'));
             
             if ($user = User::where('email', $userParams->email)->first()) 
             {
@@ -115,11 +111,10 @@ class PlaceController extends Controller
     public function update(Request $request, Place $place)
     {
         $header = getallheaders();
-        $key = '7kvP3yy3b4SGpVz6uSeSBhBEDtGzPb2n';
 
         if ($header['Authorization'] != null) 
         {
-            $userParams = JWT::decode($header['Authorization'], $key, array('HS256'));
+            $userParams = JWT::decode($header['Authorization'], $this->key, array('HS256'));
             if ($userParams->id == $place->user_id) {
                 if (empty($request->name) || empty($request->start_date) || empty($request->end_date)) 
                 {
@@ -160,11 +155,10 @@ class PlaceController extends Controller
     public function destroy(Place $place)
     {
         $header = getallheaders();
-        $key = '7kvP3yy3b4SGpVz6uSeSBhBEDtGzPb2n';
 
         if ($header['Authorization'] != null) 
         {
-            $userParams = JWT::decode($header['Authorization'], $key, array('HS256'));
+            $userParams = JWT::decode($header['Authorization'], $this->key, array('HS256'));
             $places = Place::all();
 
             if ($user = User::where('email', $userParams->email)->first()) 
@@ -177,10 +171,18 @@ class PlaceController extends Controller
                         ]);
                     } else {
                         return response()->json([
+<<<<<<< HEAD
                             'MESSAGE' => 'Dont have enough permission', 403
+=======
+                            'MESSAGE' => 'Dont have enough permission', 403 
+>>>>>>> c154ab62a1e2f237291fabb49afa6ae7f1b8e303
                         ]);
                     }
                 }
+            } else {
+                return response()->json([
+                    'MESSAGE' => 'Dont have enough permission 1', 403
+                ]);
             }
         }else {
             return response()->json([

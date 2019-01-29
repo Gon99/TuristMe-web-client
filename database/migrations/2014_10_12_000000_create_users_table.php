@@ -21,6 +21,13 @@ class CreateUsersTable extends Migration
             $table->integer('role_id');
             $table->timestamps();
         });
+
+        DB::table('users')->insert(
+            ['name' => 'admin',
+            'email' => 'adminUser@gmail.com',
+            'password' => encrypt('admin'),
+            'role_id' => 1]
+        );
     }
 
     /**

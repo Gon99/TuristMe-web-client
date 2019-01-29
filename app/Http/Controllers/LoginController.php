@@ -11,12 +11,14 @@ class LoginController extends Controller
 {
 	public function login()
     {
-        $key = '7kvP3yy3b4SGpVz6uSeSBhBEDtGzPb2n';
-
         if (empty($_POST['email']) or empty($_POST['password'])) 
         {
     		return response()->json([
+<<<<<<< HEAD
     			'MESSAGE' => 'Some fields are empty', 401
+=======
+    			'MESSAGE' => 'Some fields are empty', 411
+>>>>>>> c154ab62a1e2f237291fabb49afa6ae7f1b8e303
     		]);
     	} 
         else 
@@ -24,7 +26,7 @@ class LoginController extends Controller
             $user = User::where('email', $_POST['email'])->first();
             if (!empty($user)) 
             {
-                if ($user->password == $_POST['password']) 
+                if (decrypt($user->password) == $_POST['password']) 
                 {
                     $tokenParams = [
                         'id' => $user->id,        
@@ -32,18 +34,26 @@ class LoginController extends Controller
                         'email' => $_POST['email']
                     ];
 
-                    $token = JWT::encode($tokenParams, $key);
+                    $token = JWT::encode($tokenParams, $this->key);
                     return response()->json([
                         'MESSAGE' => $token, 200
                     ]);
                 } else {
                     return response()->json([
+<<<<<<< HEAD
                         'MESSAGE' => 'The specified password doesnt exist', 401
+=======
+                        'MESSAGE' => 'The specified password doesnt exist', 403
+>>>>>>> c154ab62a1e2f237291fabb49afa6ae7f1b8e303
                     ]);
                 }
             }else {
                 return response([
+<<<<<<< HEAD
                     'MESSAGE' => 'The specified email doesnt exist', 401
+=======
+                    'MESSAGE' => 'The specified email doesnt exist', 403
+>>>>>>> c154ab62a1e2f237291fabb49afa6ae7f1b8e303
                 ]);
             }
         }
