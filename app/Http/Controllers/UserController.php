@@ -39,11 +39,7 @@ class UserController extends Controller
     {
         if (empty($request->name) || empty($request->password) || empty($request->email)) {
             return response()->json([
-<<<<<<< HEAD
-                'MESSAGE' => 'Some fields are null'
-=======
                 'MESSAGE' => 'Some fields are null', 401
->>>>>>> c154ab62a1e2f237291fabb49afa6ae7f1b8e303
             ]);
         } else {
             $user = new User();
@@ -55,11 +51,7 @@ class UserController extends Controller
             foreach ($users as $key => $value) {
                 if ($request->email == $value->email) {
                     return response()->json([
-<<<<<<< HEAD
                         'MESSAGE' => 'The email is in use', 401
-=======
-                        'MESSAGE' => 'The email is in use'
->>>>>>> c154ab62a1e2f237291fabb49afa6ae7f1b8e303
                     ]);
                 }
             }
@@ -70,11 +62,7 @@ class UserController extends Controller
             } else 
             {
                 return response()->json([
-<<<<<<< HEAD
-                    'MESSAGE' => 'The password must have more than seven characters', 401
-=======
                     'MESSAGE' => 'The password must have more than seven characters', 411
->>>>>>> c154ab62a1e2f237291fabb49afa6ae7f1b8e303
                 ]);
             }
             $user->role_id = 2;
@@ -132,9 +120,7 @@ class UserController extends Controller
 
         if ($header['Authorization'] != null) 
         {
-            var_dump("antes del try");
             try {
-                var_dump("try");
                 $userLogged = JWT::decode($header['Authorization'], $this->key, array('HS256'));
                 if ($userLogged->id == 1) 
                 {
@@ -150,7 +136,6 @@ class UserController extends Controller
             } 
             catch (Exception $e) 
             {
-                var_dump("catch");
                 return response()->json([
                     'MESSAGE' => 'Dont have enough permission', 403
                 ]);

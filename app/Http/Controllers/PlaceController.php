@@ -17,8 +17,7 @@ class PlaceController extends Controller
     public function index()
     {
         $header = getallheaders();
-        $key = '7kvP3yy3b4SGpVz6uSeSBhBEDtGzPb2n';
-
+        
         if ($header['Authorization'] != null) 
         {
             $userParams = JWT::decode($header['Authorization'], $this->key, array('HS256'));
@@ -26,18 +25,20 @@ class PlaceController extends Controller
 
             foreach ($places as $key => $place) {
                 if (count($places) != 0 && $place->user_id == $userParams->id) {
-                    return $places;
+                    return response()->json([
+                        'MESSAGE' => 200, $places
+                    ]);
                 }else
                 {
                     return response()->json([
-                        'MESSAGE' => 'Dont have any place created yet'
+                        'MESSAGE' => 404, 'Dont have any place created yet'
                     ]);
                 }
             }
         }
         else {
             return response()->json([
-                'MESSAGE' => 'Dont have enough permission', 403
+                'MESSAGE' => 403, 'Dont have enough permission'
             ]);
         }
     }
@@ -68,24 +69,32 @@ class PlaceController extends Controller
                 else {
                     $place->name = $request->name;
                     $place->description = $request->description;
-                    $place->start_date = $request->start_date;
-                    $place->end_date = $request->end_date;
+
+                    $start_time = strtotime($request->start_date);
+                    $newStartFormat = date('y-m-d', $start_time);
+                    $place->start_date = $newStartFormat;
+
+                    $end_time = strtotime($request->end_date);
+                    $newEndFormat = date('y-m-d', $end_time);
+                    $place->end_date = $newEndFormat;
+
                     $place->x_coordinate = $request->x_coordinate;
                     $place->y_coordinate = $request->y_coordinate;
                     $place->user_id = $user->id;
                     $place->save();
+
                     return response()->json([
-                        'MESSAGE' => 'The place has been created correctly', 200
+                        'MESSAGE' => 200, 'The place has been created correctly'
                     ]); 
                 }   
             }else{
                 return response()->json([
-                    'MESSAGE' => 'Dont have enough permission', 403
+                    'MESSAGE' => 403, 'Dont have enough permission'
                 ]);
             } 
         }else {
             return response()->json([
-                'MESSAGE' => 'The user is not logged', 403
+                'MESSAGE' => 403, 'The user is not logged'
             ]);
         }
     }
@@ -119,7 +128,7 @@ class PlaceController extends Controller
                 if (empty($request->name) || empty($request->start_date) || empty($request->end_date)) 
                 {
                     return response()->json([
-                        'MESSAGE' => 'Some fields are empty'
+                        'MESSAGE' => 411, 'Some fields are empty'
                     ]);    
                 }
                 else {
@@ -131,17 +140,17 @@ class PlaceController extends Controller
                     $place->y_coordinate = $request->y_coordinate;
                     $place->save();
                     return response()->json([
-                        'MESSAGE' => 'The place has been updated correctly', 200
+                        'MESSAGE' => 200, 'The place has been updated correctly'
                     ]); 
                 }
             }else {
                 return response()->json([
-                    'MESSAGE' => 'Dont have enough permission', 403
+                    'MESSAGE' => 403, 'Dont have enough permission'
                 ]);
             }
         }else {
             return response()->json([
-                'MESSAGE' => 'The user is not logged', 403
+                'MESSAGE' => 403, 'The user is not logged'
             ]);
         }
     }
@@ -167,26 +176,22 @@ class PlaceController extends Controller
                     if ($place->user_id == $userParams->id) {
                         $place->delete();
                         return response()->json([
-                            'MESSAGE' => 'The place has been deleted correctly', 200
+                            'MESSAGE' => 200, 'The place has been deleted correctly'
                         ]);
                     } else {
                         return response()->json([
-<<<<<<< HEAD
-                            'MESSAGE' => 'Dont have enough permission', 403
-=======
-                            'MESSAGE' => 'Dont have enough permission', 403 
->>>>>>> c154ab62a1e2f237291fabb49afa6ae7f1b8e303
+                            'MESSAGE' => 403, 'Dont have enough permission' 
                         ]);
                     }
                 }
             } else {
                 return response()->json([
-                    'MESSAGE' => 'Dont have enough permission 1', 403
+                    'MESSAGE' => 403, 'Dont have enough permission'
                 ]);
             }
         }else {
             return response()->json([
-                'MESSAGE' => 'The user is not logged', 403
+                'MESSAGE' => 403, 'The user is not logged'
             ]);
         }
     }

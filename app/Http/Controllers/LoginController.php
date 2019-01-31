@@ -14,11 +14,7 @@ class LoginController extends Controller
         if (empty($_POST['email']) or empty($_POST['password'])) 
         {
     		return response()->json([
-<<<<<<< HEAD
-    			'MESSAGE' => 'Some fields are empty', 401
-=======
     			'MESSAGE' => 'Some fields are empty', 411
->>>>>>> c154ab62a1e2f237291fabb49afa6ae7f1b8e303
     		]);
     	} 
         else 
@@ -40,20 +36,12 @@ class LoginController extends Controller
                     ]);
                 } else {
                     return response()->json([
-<<<<<<< HEAD
-                        'MESSAGE' => 'The specified password doesnt exist', 401
-=======
                         'MESSAGE' => 'The specified password doesnt exist', 403
->>>>>>> c154ab62a1e2f237291fabb49afa6ae7f1b8e303
                     ]);
                 }
             }else {
                 return response([
-<<<<<<< HEAD
-                    'MESSAGE' => 'The specified email doesnt exist', 401
-=======
                     'MESSAGE' => 'The specified email doesnt exist', 403
->>>>>>> c154ab62a1e2f237291fabb49afa6ae7f1b8e303
                 ]);
             }
         }
