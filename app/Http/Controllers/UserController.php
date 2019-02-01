@@ -16,7 +16,25 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        $header = getallheaders();
+        $userParams = JWT::decode($header['Authorization'], $this->key, array('HS256'));
+        if(self::checkLogin($userParams->email, $userParams->password)){
+            if ($user = User::where('role_id', 2)->get()) {
+                return response()->json([
+                    'MESSAGE' => 'ssss'//$user
+                ]);
+            }
+            else{
+                return response()->json([
+                    'MESSAGE' => 'There are no users registered'
+                ]);
+            }
+        }else{
+            var_dump("else");
+            exit();
+        }
+        //var_dump($userParams);
+        //exit();
     }
 
     /**
@@ -103,9 +121,43 @@ class UserController extends Controller
      * @param  \App\GPASS  $gPASS
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, GPASS $gPASS)
+    public function update(Request $request, User $user)
     {
-        //
+        $header = getallheaders();
+
+        if ($header['Authorization'] != null) 
+        {
+            try {
+                $userLogged = JWT::decode($header['Authorization'], $this->key, array('HS256'));
+                if ($userLogged->id == 1) 
+                {
+                    if (empty($request->name) || empty($request->email) || empty($request->password))
+                    {
+                        return response()->json([
+                            'MESSAGE' => 'You have to change at least one field'
+                        ]);
+                    }
+
+                    $user->name = $request->name;
+                    $user->email = $request->email;
+                    $user->password = $request->password;
+
+                    return response()->json([
+                        'MESSAGE' => 'The user has been updated correctly', 200
+                    ]);
+                } else {
+                    return response()->json([
+                        'MESSAGE' => 'Dont have enough permission', 403
+                    ]);
+                }
+            } 
+            catch (Exception $e) 
+            {
+                return response()->json([
+                    'MESSAGE' => 'Dont have enough permission', 403
+                ]);
+            }
+        }
     }
 
     /**
