@@ -24,7 +24,11 @@ class PlaceController extends Controller
             $places = Place::all();
 
             foreach ($places as $key => $place) {
-                if (count($places) != 0 && $place->user_id == $userParams->id) {
+                return response()->json([
+                    'MESSAGE' => $places
+                ]);
+
+                /*if (count($places) != 0 && $place->user_id == $userParams->id) {
                     return response()->json([
                         'MESSAGE' => 200, $places
                     ]);
@@ -33,7 +37,7 @@ class PlaceController extends Controller
                     return response()->json([
                         'MESSAGE' => 404, 'Dont have any place created yet'
                     ]);
-                }
+                }*/
             }
         }
         else {
