@@ -21,23 +21,16 @@ class PlaceController extends Controller
         if ($header['Authorization'] != null) 
         {
             $userParams = JWT::decode($header['Authorization'], $this->key, array('HS256'));
-            $places = Place::all();
+            $places = Place::where('user_id', $userParams->id)->get();
 
-            foreach ($places as $key => $place) {
+            if(count($places) != 0)
+            {
+                return $places;
+            }else
+            {
                 return response()->json([
-                    'MESSAGE' => $places
-                ]);
-
-                /*if (count($places) != 0 && $place->user_id == $userParams->id) {
-                    return response()->json([
-                        'MESSAGE' => 200, $places
-                    ]);
-                }else
-                {
-                    return response()->json([
-                        'MESSAGE' => 404, 'Dont have any place created yet'
-                    ]);
-                }*/
+                    'MESSAGE' => 400, 'Dont have any place created yet'
+                ]); 
             }
         }
         else {
@@ -125,36 +118,29 @@ class PlaceController extends Controller
     {
         $header = getallheaders();
 
-        if ($header['Authorization'] != null) 
-        {
-            $userParams = JWT::decode($header['Authorization'], $this->key, array('HS256'));
-            if ($userParams->id == $place->user_id) {
-                if (empty($request->name) || empty($request->start_date) || empty($request->end_date)) 
-                {
-                    return response()->json([
-                        'MESSAGE' => 411, 'Some fields are empty'
-                    ]);    
-                }
-                else {
-                    $place->name = $request->name;
-                    $place->description = $request->description;
-                    $place->start_date = $request->start_date;
-                    $place->end_date = $request->end_date;
-                    $place->x_coordinate = $request->x_coordinate;
-                    $place->y_coordinate = $request->y_coordinate;
-                    $place->save();
-                    return response()->json([
-                        'MESSAGE' => 200, 'The place has been updated correctly'
-                    ]); 
-                }
-            }else {
+        $userParams = JWT::decode($header['Authorization'], $this->key, array('HS256'));
+        if ($userParams->id == $place->user_id) {
+            if (empty($request->name) || empty($request->start_date) || empty($request->end_date)) 
+            {
                 return response()->json([
-                    'MESSAGE' => 403, 'Dont have enough permission'
-                ]);
+                    'MESSAGE' => 411, 'Some fields are empty'
+                ]);    
+            }
+            else {
+                $place->name = $request->name;
+                $place->description = $request->description;
+                $place->start_date = $request->start_date;
+                $place->end_date = $request->end_date;
+                $place->x_coordinate = $request->x_coordinate;
+                $place->y_coordinate = $request->y_coordinate;
+                $place->save();
+                return response()->json([
+                    'MESSAGE' => 200, 'The place has been updated correctly'
+                ]); 
             }
         }else {
             return response()->json([
-                'MESSAGE' => 403, 'The user is not logged'
+                'MESSAGE' => 403, 'Dont have enough permission'
             ]);
         }
     }
@@ -167,35 +153,35 @@ class PlaceController extends Controller
      */
     public function destroy(Place $place)
     {
-        $header = getallheaders();
+    $header = getallheaders();
 
-        if ($header['Authorization'] != null) 
+    if (!empty($header['Authorization'])) 
+    {
+        $userParams = JWT::decode($header['Authorization'], $this->key, array('HS256'));
+        $places = Place::all();
+
+        if ($user = User::where('email', $userParams->email)->first()) 
         {
-            $userParams = JWT::decode($header['Authorization'], $this->key, array('HS256'));
-            $places = Place::all();
-
-            if ($user = User::where('email', $userParams->email)->first()) 
-            {
-                foreach ($places as $key => $place) {
-                    if ($place->user_id == $userParams->id) {
-                        $place->delete();
-                        return response()->json([
-                            'MESSAGE' => 200, 'The place has been deleted correctly'
-                        ]);
-                    } else {
-                        return response()->json([
-                            'MESSAGE' => 403, 'Dont have enough permission' 
-                        ]);
-                    }
+            foreach ($places as $key => $place) {
+                if ($place->user_id == $userParams->id) {
+                    $place->delete();
+                    return response()->json([
+                        'MESSAGE' => 200, 'The place has been deleted correctly'
+                    ]);
+                } else {
+                    return response()->json([
+                        'MESSAGE' => 403, 'Dont have enough permission' 
+                    ]);
                 }
-            } else {
-                return response()->json([
+            }
+        } else {
+            return response()->json([
                     'MESSAGE' => 403, 'Dont have enough permission'
                 ]);
             }
-        }else {
+        }else{
             return response()->json([
-                'MESSAGE' => 403, 'The user is not logged'
+                'MESSAGE' => 'The user is not logged'
             ]);
         }
     }

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Peticion Jquery</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+	<!--<style>
+		#contenedor {
+			background: lavender;
+			height: 400px;
+			width: 400px;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+		}
+
+		td {
+			padding: 5px 5px;
+			font-family: 'Calibri';
+			border-bottom: 1px solid white;
+			text-align: center;
+		}
+
+	</style>-->
+	
+</head>
+<body>
+
+	<h1>Admin panel</h1>
+
+	<button onclick="usersList();">Users</button>
+
+</body>
+
+<script>
+	
+		function usersList() {
+
+			$.ajax({
+
+				url: 'http://localhost:80/TuristMe/public/index.php/api/user',
+
+			 	type: 'GET',
+
+			 	beforeSend: function(request) {
+			 		request.setRequestHeader("Authorization", sessionStorage.getItem("token"));
+			 	},
+
+				success : function(data) {
+			 		$("#results").append("The result =" + StringfyPretty(data));
+			 	},
+
+			 	error : function (xhr, status) {
+			 		console.log('Error creating user');
+			 	},
+
+			 	complete : function(xhr, status) {
+					console.log('Petition complete');
+			 	}
+			
+			 });
+		}
+
+	</script>
+
+</html>

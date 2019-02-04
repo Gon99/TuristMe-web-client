@@ -18,23 +18,16 @@ class UserController extends Controller
     {
         $header = getallheaders();
         $userParams = JWT::decode($header['Authorization'], $this->key, array('HS256'));
-        if(self::checkLogin($userParams->email, $userParams->password)){
-            if ($user = User::where('role_id', 2)->get()) {
-                return response()->json([
-                    'MESSAGE' => 'ssss'//$user
-                ]);
-            }
-            else{
-                return response()->json([
-                    'MESSAGE' => 'There are no users registered'
-                ]);
-            }
-        }else{
-            var_dump("else");
-            exit();
+        if ($userParams->id == 1) {
+            return User::where('role_id', 2)->get();
         }
-        //var_dump($userParams);
-        //exit();
+        else
+        {
+            return response()->json([
+                'MESSAGE' => 403, 'Dont have enough permission'
+            ]);
+        }
+        
     }
 
     /**

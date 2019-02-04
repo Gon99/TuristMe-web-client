@@ -23,4 +23,7 @@ Route::apiResource('role', 'RoleController');
 
 Route::apiResource('place', 'PlaceController');
 
-Route::post('login', 'LoginController@login');
+Route::post('login/app', 'LoginController@loginApp');
+
+Route::post('login/web', 'LoginController@loginWeb');
+
