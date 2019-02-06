@@ -25,17 +25,19 @@ class PlaceController extends Controller
 
             if(count($places) != 0)
             {
-                return $places;
+                return response()->json([
+                    'MESSAGE' => $places
+                ]);
             }else
             {
                 return response()->json([
-                    'MESSAGE' => 400, 'Dont have any place created yet'
-                ]); 
+                    'MESSAGE' => 'Dont have any place created yet', 400
+                ], 400); 
             }
         }
         else {
             return response()->json([
-                'MESSAGE' => 403, 'Dont have enough permission'
+                'MESSAGE' => 'Dont have enough permission', 403
             ]);
         }
     }

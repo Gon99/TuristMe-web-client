@@ -56,7 +56,7 @@
 
 			$.ajax({
 
-				url: 'http://localhost:80/TuristMe/public/index.php/api/login/web',
+				url: 'http://localhost:8888/turistme/public/index.php/api/login/web',
 
 			 	data: {	
 			 		email: email,
@@ -69,15 +69,22 @@
 
 				success : function(data) {
 			 		console.log(data);
-			 		sessionStorage.setItem('token', data.token);
+			 		localStorage.setItem('token', data.MESSAGE);
+			 		//No funcionaba porque no estabamos usando localhost para la peticion
 			 		if ($(data)){
 
 			 		}
-			 		//window.location.href = "http://localhost/TuristMe/webclient/main.html";
+			 		//Si ponemos localhost en la URL, indicamos que se realize una petición HTTP, por lo cual estamos utilizando el servidor MAMP (php, mysql y Apache)
+			 		//Es importante indicarlo ya que si se quiere acceder de manera remota no se podrá ya que es un archivo que únicamente esta almacenado en nuestro PC
+			 		window.location.href = "http://localhost:8888/TuristMe/webclient/main.html";
 			 	},
 
 			 	error : function (xhr, status) {
+			 		//Gestionar el error cuando el estatus de la petición es distinto a 200
+			 		//El status code se cambia en PHP, la respuesta json
 			 		console.log('Error creating user');
+			 		console.log(xhr);
+			 		alert('dont have enough permission');
 			 	},
 
 			 	complete : function(xhr, status) {

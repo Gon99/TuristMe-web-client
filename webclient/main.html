@@ -39,12 +39,12 @@
 
 			$.ajax({
 
-				url: 'http://localhost:80/TuristMe/public/index.php/api/user',
+				url: 'http://localhost:8888/museobackend/public/index.php/api/user',
 
 			 	type: 'GET',
 
 			 	beforeSend: function(request) {
-			 		request.setRequestHeader("Authorization", sessionStorage.getItem("token"));
+			 		request.setRequestHeader("Authorization", localStorage.getItem("token"));
 			 	},
 
 				success : function(data) {

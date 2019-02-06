@@ -24,7 +24,7 @@ class LoginController extends Controller
             {
                 if (decrypt($user->password) == $_POST['password']) 
                 {
-                    if ($user->role_id == 1) {
+                    if ($user->role_id == 2) {
                             $tokenParams = [
                             'id' => $user->id,        
                             'password' => $_POST['password'],
@@ -82,8 +82,8 @@ class LoginController extends Controller
                         ]);
                     }else {
                         return response()->json([
-                            'MESSAGE' => 'Dont have enough permission'
-                        ]);
+                            'MESSAGE' =>'Dont have enough permission'
+                        ], 403);
                     }
                     
                 } else {
