@@ -69,28 +69,26 @@
 
 				success : function(data) {
 			 		console.log(data);
-			 		localStorage.setItem('token', data.MESSAGE);
+			 		sessionStorage.setItem('token', data.MESSAGE);
 			 		//No funcionaba porque no estabamos usando localhost para la peticion
-			 		if ($(data)){
-
-			 		}
 			 		//Si ponemos localhost en la URL, indicamos que se realize una petición HTTP, por lo cual estamos utilizando el servidor MAMP (php, mysql y Apache)
 			 		//Es importante indicarlo ya que si se quiere acceder de manera remota no se podrá ya que es un archivo que únicamente esta almacenado en nuestro PC
 			 		window.location.href = "http://localhost/TuristMe/webclient/main.html";
 			 	},
 
+			 	/*.fail(function() {
+			 		console.log('desde el fail');
+			 	})*/
+
 			 	error : function (xhr, status) {
 			 		//Gestionar el error cuando el estatus de la petición es distinto a 200
 			 		//El status code se cambia en PHP, la respuesta json
-			 		console.log('Error creating user');
-			 		console.log(xhr);
-			 		alert('dont have enough permission');
+			 		alert(xhr.responseJSON['MESSAGE']);
 			 	},
 
 			 	complete : function(xhr, status) {
 					console.log('Petition complete');
 			 	}
-			
 			 });
 		}
 

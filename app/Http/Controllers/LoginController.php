@@ -59,8 +59,8 @@ class LoginController extends Controller
         if (empty($_POST['email']) or empty($_POST['password'])) 
         {
             return response()->json([
-                'MESSAGE' => 'Some fields are empty', 411
-            ]);
+                'MESSAGE' => 'Some fields are empty'], 411
+            );
         } 
         else 
         {
@@ -78,23 +78,23 @@ class LoginController extends Controller
 
                         $token = JWT::encode($tokenParams, $this->key);
                         return response()->json([
-                            'MESSAGE' => $token, 200
-                        ]);
+                            'MESSAGE' => $token], 200
+                    );
                     }else {
                         return response()->json([
-                            'MESSAGE' =>'Dont have enough permission'
-                        ], 403);
+                            'MESSAGE' =>'Dont have enough permission'], 403
+                        );
                     }
                     
                 } else {
                     return response()->json([
-                        'MESSAGE' => 'The specified password doesnt exist', 403
-                    ]);
+                        'MESSAGE' => 'The specified password doesnt exist'], 400
+                    );
                 }
             }else {
                 return response([
-                    'MESSAGE' => 'The specified email doesnt exist', 403
-                ]);
+                    'MESSAGE' => 'The specified email doesnt exist'], 400
+                );
             }
         }
     }
