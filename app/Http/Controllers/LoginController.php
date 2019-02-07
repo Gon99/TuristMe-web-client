@@ -69,7 +69,8 @@ class LoginController extends Controller
             {
                 if (decrypt($user->password) == $_POST['password']) 
                 {
-                    if ($user->role_id == 1) {
+                    if ($user->role_id == 1) 
+                    {
                             $tokenParams = [
                             'id' => $user->id,        
                             'password' => $_POST['password'],
@@ -79,20 +80,25 @@ class LoginController extends Controller
                         $token = JWT::encode($tokenParams, $this->key);
                         return response()->json([
                             'MESSAGE' => $token], 200
-                    );
-                    }else {
+                        );
+                    }
+                    else 
+                    {
                         return response()->json([
                             'MESSAGE' =>'Dont have enough permission'], 403
                         );
                     }
-                    
-                } else {
+                } 
+                else 
+                {
                     return response()->json([
                         'MESSAGE' => 'The specified password doesnt exist'], 400
                     );
                 }
-            }else {
-                return response([
+            }
+            else 
+            {
+                return response()->json([
                     'MESSAGE' => 'The specified email doesnt exist'], 400
                 );
             }

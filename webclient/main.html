@@ -28,7 +28,12 @@
 <body>
 
 	<h1>Admin panel</h1>
-
+	<table class="table">
+		<thead>
+			<tr><th>Name</th><th>Email</th></tr>
+		</thead>
+		<tbody id="tBody"></tbody>
+	</table>
 	<button onclick="usersList();">Users</button>
 
 </body>
@@ -39,20 +44,29 @@
 
 			$.ajax({
 
-				url: 'http://localhost:80/TuristMe/public/index.php/api/user',
+				url: 'http://localhost:8888/turistme/public/index.php/api/user',
 
 			 	type: 'GET',
 
+			 	dataType:'json',
+
 			 	beforeSend: function(request) {
-			 		request.setRequestHeader("Authorization", sessionStorage.getItem("token"));
+			 		request.setRequestHeader('Authorization', sessionStorage.getItem("token"));
 			 	},
 
 				success : function(data) {
-			 		$("#results").append("The result =" + StringfyPretty(data));
+					console.log(data);
+					var trHTML='';
+
+						for (var i = 0; i<data.length; i ++) {
+							trHTML=trHTML+'<tr><td>'+data[i].name+'</td><td>'+data[i].email+'</td></tr>';
+						}
+						$('#tBody').append(trHTML);
+			 		//console.log(data);
 			 	},
 
 			 	error : function (xhr, status) {
-			 		console.log('Error creating user');
+			 		console.log('Error getting users');
 			 	},
 
 			 	complete : function(xhr, status) {
