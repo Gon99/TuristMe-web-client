@@ -4,32 +4,46 @@
 	<title>Peticion Jquery</title>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
-	<!--<style>
-		#contenedor {
-			background: lavender;
-			height: 400px;
-			width: 400px;
-			position: absolute;
-			top: 50%;
-			left: 50%;
-			transform: translate(-50%, -50%);
+	<style>
+		table {
+			/*display: block;
+			overflow-x: auto;
+			white-space: nowrap;
+			margin: auto;
+			table-layout: fixed;
+			width: 500px;*/
 		}
-
 		td {
 			padding: 5px 5px;
 			font-family: 'Calibri';
 			border-bottom: 1px solid white;
-			text-align: center;
 		}
-
-	</style>-->
+		/*tr:nth-child(odd) {
+			background: #A8FF9D;
+		}
+		tr:nth-child(1) td {
+			background: white;
+			font-weight: bold;
+			color: #005800;
+		}
+		tr:nth-child(even) {
+			background: #2F830E;
+		}
+		td:nth-child(1) {
+         color: white;
+         border-right: 1px white solid;
+         background: #2F830E;
+         font-weight: bold;*/
+      }
+	</style>
 	
-</head>
-<body>
+	</head>
+	<body>
 
 	<h1>Admin panel</h1>
 	<table class="table">
 		<thead>
+<<<<<<< HEAD
 			<tr><th>Name</th><th>Email</th></tr>
 		</thead>
 		<tbody id="tBody"></tbody>
@@ -45,6 +59,29 @@
 			$.ajax({
 
 				url: 'http://localhost:8888/turistme/public/index.php/api/user',
+=======
+			<tr>
+				<td id="id">Id</td>
+				<td id="name">Name</td>
+				<td id="email">Email</td>
+				<td id="password">Password</td>
+				<td id="role_id">Role_id</td>
+			</tr>
+		</thead>
+	</table>
+	</body>
+
+	<script>
+		window.onload = function() {
+			getUsers();
+		};
+
+		function getUsers(){
+
+			$.ajax({
+
+				url: 'http://localhost:80/TuristMe-web-client/public/index.php/api/user',
+>>>>>>> 67ad0fe9c098a6b20b6fbd1505de0f07a842d567
 
 			 	type: 'GET',
 
@@ -54,6 +91,7 @@
 			 		request.setRequestHeader('Authorization', sessionStorage.getItem("token"));
 			 	},
 
+<<<<<<< HEAD
 				success : function(data) {
 					console.log(data);
 					var trHTML='';
@@ -63,6 +101,18 @@
 						}
 						$('#tBody').append(trHTML);
 			 		//console.log(data);
+=======
+				success : function(response) {
+					var trHTML='';
+
+					for (var i = 0; i<response.length; i++) {
+						$('#id').append('<tr><td>'+response[i].id+'</td></td>')
+						$('#name').append('<tr><td>'+response[i].name+'</td></td>');
+						$('#email').append('<tr><td>'+response[i].email+'</td></td>');
+						$('#password').append('<tr><td>'+response[i].password+'</td></td>');
+						$('#role_id').append('<tr><td>'+response[i].role_id+'</td><td>'+'<button onclick="deleteUser('+i+');">Delete');
+					}
+>>>>>>> 67ad0fe9c098a6b20b6fbd1505de0f07a842d567
 			 	},
 
 			 	error : function (xhr, status) {
@@ -76,6 +126,28 @@
 			 });
 		}
 
+		function deleteUser(id){
+			$.ajax({
+				url: 'http://localhost:80/TuristMe-web-client/public/index.php/api/user',
+
+				type: 'DELETE',
+
+				beforeSend: function(request) {
+			 		request.setRequestHeader("Authorization", sessionStorage.getItem("token"));
+			 	},
+
+				success : function(response) {
+					console.log(response);
+					console.log('se deleteo weyy');
+				},
+
+				error : function (xhr, status) {
+					console.log(xhr);
+					console.log(status);
+					console.log('dio error');
+				}
+			})
+		}
 	</script>
 
 </html>
