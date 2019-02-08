@@ -5,19 +5,18 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
 	<style>
-		table {
-			/*display: block;
-			overflow-x: auto;
-			white-space: nowrap;
-			margin: auto;
-			table-layout: fixed;
-			width: 500px;*/
-		}
+
 		td {
 			padding: 5px 5px;
 			font-family: 'Calibri';
 			border-bottom: 1px solid white;
+			width: 180px;
+			height: 30px;
 		}
+		/*table{
+			table-layout: fixed;
+			width: 500px;
+		}*/
 		/*tr:nth-child(odd) {
 			background: #A8FF9D;
 		}
@@ -41,25 +40,11 @@
 	<body>
 
 	<h1>Admin panel</h1>
+	<div>
+		<a href="http://localhost:8888/TuristMe-web-client/webclient/createuser.html">Crear usuario</a>
+	</div>
 	<table class="table">
 		<thead>
-<<<<<<< HEAD
-			<tr><th>Name</th><th>Email</th></tr>
-		</thead>
-		<tbody id="tBody"></tbody>
-	</table>
-	<button onclick="usersList();">Users</button>
-
-</body>
-
-<script>
-	
-		function usersList() {
-
-			$.ajax({
-
-				url: 'http://localhost:8888/turistme/public/index.php/api/user',
-=======
 			<tr>
 				<td id="id">Id</td>
 				<td id="name">Name</td>
@@ -69,50 +54,46 @@
 			</tr>
 		</thead>
 	</table>
-	</body>
 
-	<script>
+</body>
+
+<script>
+
 		window.onload = function() {
+			checkLogin();
 			getUsers();
 		};
+
+		function checkLogin(){
+			var token = sessionStorage.getItem('token');
+			if (token == null) {
+				window.location.href="http://localhost:8888/TuristMe-web-client/webclient/login.html";
+			}
+		}
 
 		function getUsers(){
 
 			$.ajax({
 
-				url: 'http://localhost:80/TuristMe-web-client/public/index.php/api/user',
->>>>>>> 67ad0fe9c098a6b20b6fbd1505de0f07a842d567
+				url: 'http://localhost:8888/TuristMe-web-client/public/index.php/api/user',
+
 
 			 	type: 'GET',
 
 			 	dataType:'json',
 
 			 	beforeSend: function(request) {
-			 		request.setRequestHeader('Authorization', sessionStorage.getItem("token"));
+			 		request.setRequestHeader("Authorization", sessionStorage.getItem("token"));
 			 	},
 
-<<<<<<< HEAD
-				success : function(data) {
-					console.log(data);
-					var trHTML='';
-
-						for (var i = 0; i<data.length; i ++) {
-							trHTML=trHTML+'<tr><td>'+data[i].name+'</td><td>'+data[i].email+'</td></tr>';
-						}
-						$('#tBody').append(trHTML);
-			 		//console.log(data);
-=======
 				success : function(response) {
-					var trHTML='';
-
 					for (var i = 0; i<response.length; i++) {
-						$('#id').append('<tr><td>'+response[i].id+'</td></td>')
+						$('#id').append('<tr><td>'+response[i].id+'</td></td>');
 						$('#name').append('<tr><td>'+response[i].name+'</td></td>');
 						$('#email').append('<tr><td>'+response[i].email+'</td></td>');
 						$('#password').append('<tr><td>'+response[i].password+'</td></td>');
-						$('#role_id').append('<tr><td>'+response[i].role_id+'</td><td>'+'<button onclick="deleteUser('+i+');">Delete');
+						$('#role_id').append('<tr><td>'+response[i].role_id+'</td><td>'+'<button onclick="deleteUser('+response[i].id+');">Delete');
 					}
->>>>>>> 67ad0fe9c098a6b20b6fbd1505de0f07a842d567
 			 	},
 
 			 	error : function (xhr, status) {
@@ -128,17 +109,19 @@
 
 		function deleteUser(id){
 			$.ajax({
-				url: 'http://localhost:80/TuristMe-web-client/public/index.php/api/user',
-
-				type: 'DELETE',
-
 				beforeSend: function(request) {
 			 		request.setRequestHeader("Authorization", sessionStorage.getItem("token"));
 			 	},
+			 	
+				url: 'http://localhost:8888/TuristMe-web-client/public/index.php/api/user/'+id,
+
+				type: 'DELETE',
+
+				
 
 				success : function(response) {
-					console.log(response);
-					console.log('se deleteo weyy');
+					alert(response.MESSAGE);
+					window.location.href="http://localhost:8888/TuristMe-web-client/webclient/main.html";
 				},
 
 				error : function (xhr, status) {

@@ -3,38 +3,21 @@
 <head>
 	<title>Peticion Jquery</title>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
-	<!--<style>
-		#contenedor {
-			background: lavender;
-			height: 400px;
-			width: 400px;
-			position: absolute;
-			top: 50%;
-			left: 50%;
-			transform: translate(-50%, -50%);
-		}
-
-		td {
-			padding: 5px 5px;
-			font-family: 'Calibri';
-			border-bottom: 1px solid white;
-			text-align: center;
-		}
-
-	</style>-->
-	
 </head>
 <body>
 
 	<div id="contenedor">
-	<h1>Login usuario</h1>
+	<h1>Crear usuario</h1>
 
 	<table>
 		<tr>
-			<td>Email</td>
-			<td><input id="email" type="text" name="Email" required></td>
+			<td>Nombre</td>
+			<td><input id="name" type="text" name="name" required></td>
 			
+		</tr>
+		<tr>
+			<td>Email</td>
+			<td><input id="email" type="email" name="Email" required></td>
 		</tr>
 		<tr>
 			<td>Password</td>
@@ -42,23 +25,24 @@
 		</tr>
 
 	</table>
-	<button onclick="login();">Login</button>
+	<button onclick="createUser();">Crear usuario</button>
 	</div>
 
 </body>
 
 <script>
 	
-		function login() {
-
+		function createUser() {
+			var name = document.getElementById('name').value;
 			var email = document.getElementById('email').value;		//Document es el documento con el que trabajamos, se le llama DOM a todo lo de dentro del documento.
 			var password = document.getElementById('password').value;
 
 			$.ajax({
 
-				url: 'http://localhost:8888/TuristMe-web-client/public/index.php/api/login/web',
+				url: 'http://localhost:8888/TuristMe-web-client/public/index.php/api/user',
 
-			 	data: {	
+			 	data: {
+			 		name: name,	
 			 		email: email,
 					password: password
 				},
@@ -68,8 +52,8 @@
 			 	dataType : 'json',
 
 				success : function(data) {
-			 		console.log(data);
-			 		sessionStorage.setItem('token', data.MESSAGE);
+			 		alert(data.MESSAGE);
+			 		
 			 		//No funcionaba porque no estabamos usando localhost para la peticion
 			 		//Si ponemos localhost en la URL, indicamos que se realize una petición HTTP, por lo cual estamos utilizando el servidor MAMP (php, mysql y Apache)
 			 		//Es importante indicarlo ya que si se quiere acceder de manera remota no se podrá ya que es un archivo que únicamente esta almacenado en nuestro PC
@@ -90,11 +74,5 @@
 			 	}
 			 });
 		}
-
 	</script>
-
 </html>
-
-
-
-
