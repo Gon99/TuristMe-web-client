@@ -50,8 +50,8 @@ class UserController extends Controller
     {
         if (empty($request->name) || empty($request->password) || empty($request->email)) {
             return response()->json([
-                'MESSAGE' => 'Some fields are null', 401
-            ]);
+                'MESSAGE' => 'Some fields are null'], 401
+            );
         } else {
             $user = new User();
 
@@ -62,8 +62,8 @@ class UserController extends Controller
             foreach ($users as $key => $value) {
                 if ($request->email == $value->email) {
                     return response()->json([
-                        'MESSAGE' => 'The email is in use', 401
-                    ]);
+                        'MESSAGE' => 'The email is in use'], 401
+                    );
                 }
             }
 
@@ -73,15 +73,15 @@ class UserController extends Controller
             } else 
             {
                 return response()->json([
-                    'MESSAGE' => 'The password must have more than seven characters', 411
-                ]);
+                    'MESSAGE' => 'The password must have more than seven characters'], 411
+                );
             }
             $user->role_id = 2;
 
             $user->save();
             return response()->json([
-                'MESSAGE' => 'The user has been register correctly', 200
-            ]);
+                'MESSAGE' => 'The user has been register correctly'], 200
+            );
         } 
     }
 
@@ -127,28 +127,45 @@ class UserController extends Controller
                     if (empty($request->name) || empty($request->email) || empty($request->password))
                     {
                         return response()->json([
-                            'MESSAGE' => 'You have to change at least one field'
-                        ]);
+                            'MESSAGE' => 'You have to change at least one field'], 400
+                        );
                     }
 
                     $user->name = $request->name;
-                    $user->email = $request->email;
-                    $user->password = $request->password;
 
+                    $users = User::where('email', $request->email)->get();
+                    foreach ($users as $key => $value) {
+                        if ($request->email == $value->email) {
+                            return response()->json([
+                                'MESSAGE' => 'The email is in use'], 401
+                            );
+                        }
+                    }
+                    $user->email = $request->email;
+                    if (strlen($request->password) > 7)
+                    {
+                        $user->password = encrypt($request->password);
+                    } else 
+                    {
                     return response()->json([
-                        'MESSAGE' => 'The user has been updated correctly', 200
-                    ]);
+                            'MESSAGE' => 'The password must have more than seven characters', 411
+                        ]);
+                    }
+                    $user->save();
+                    return response()->json([
+                        'MESSAGE' => 'The user has been updated correctly'], 200
+                    );
                 } else {
                     return response()->json([
-                        'MESSAGE' => 'Dont have enough permission', 403
-                    ]);
+                        'MESSAGE' => 'Dont have enough permission'], 403
+                    );
                 }
             } 
             catch (Exception $e) 
             {
                 return response()->json([
-                    'MESSAGE' => 'Dont have enough permission', 403
-                ]);
+                    'MESSAGE' => 'Dont have enough permission'], 403
+                );
             }
         }
     }

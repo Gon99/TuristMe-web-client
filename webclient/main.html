@@ -8,41 +8,60 @@
 
 		td {
 			padding: 5px 5px;
-			font-family: 'Calibri';
+			font-family: 'Helvetica';
 			border-bottom: 1px solid white;
 			width: 180px;
 			height: 30px;
 		}
-		/*table{
-			table-layout: fixed;
+
+		h1 {
+			font-family: 'Calibri';
+		}
+
+		nav {
+	    	background: #2D92F7;
+	    	/*text-align: left;*/
+	    	padding: 5px;
+	 	}
+
+     	nav a {
+        	color: white;
+        	text-decoration: none;
+        	font-size: 1rem;
+        	padding: 5px 20px;
+        	font-family: 'Helvetica';
+     	}
+     	nav a:hover {
+        	background: #003D7A;
+     	}
+		table{
 			width: 500px;
-		}*/
-		/*tr:nth-child(odd) {
+		}
+		tr:nth-child(odd) {
 			background: #A8FF9D;
 		}
 		tr:nth-child(1) td {
-			background: white;
+			background: #D9ECFF;
 			font-weight: bold;
-			color: #005800;
+			color: black;
 		}
-		tr:nth-child(even) {
-			background: #2F830E;
-		}
+		
 		td:nth-child(1) {
-         color: white;
-         border-right: 1px white solid;
-         background: #2F830E;
-         font-weight: bold;*/
-      }
+         	border: 1px #D9ECFF solid;
+         	background: black;
+         	font-weight: bold;
+    	}
+
 	</style>
 	
 	</head>
 	<body>
 
 	<h1>Admin panel</h1>
-	<div>
-		<a href="http://localhost:8888/TuristMe-web-client/webclient/createuser.html">Crear usuario</a>
-	</div>
+	<nav>
+		<a href="http://localhost/TuristMe-web-client/webclient/createuser.html">Crear usuario</a>
+		<a href="http://localhost/TuristMe-web-client/webclient/login.html" onclick="closeSession();">Cerrar sesion</a>
+	</nav>
 	<table class="table">
 		<thead>
 			<tr>
@@ -67,15 +86,19 @@
 		function checkLogin(){
 			var token = sessionStorage.getItem('token');
 			if (token == null) {
-				window.location.href="http://localhost:8888/TuristMe-web-client/webclient/login.html";
+				window.location.href="http://localhost/TuristMe-web-client/webclient/login.html";
 			}
+		}
+
+		function closeSession(){
+			sessionStorage.clear();
 		}
 
 		function getUsers(){
 
 			$.ajax({
 
-				url: 'http://localhost:8888/TuristMe-web-client/public/index.php/api/user',
+				url: 'http://localhost:80/TuristMe-web-client/public/index.php/api/user',
 
 
 			 	type: 'GET',
@@ -92,7 +115,7 @@
 						$('#name').append('<tr><td>'+response[i].name+'</td></td>');
 						$('#email').append('<tr><td>'+response[i].email+'</td></td>');
 						$('#password').append('<tr><td>'+response[i].password+'</td></td>');
-						$('#role_id').append('<tr><td>'+response[i].role_id+'</td><td>'+'<button onclick="deleteUser('+response[i].id+');">Delete');
+						$('#role_id').append('<tr><td>'+response[i].role_id+'</td><td>'+'<button onclick="goToEdit('+response[i].id+');">Edit'+'<button onclick="deleteUser('+response[i].id+');">Delete');
 					}
 			 	},
 
@@ -107,13 +130,18 @@
 			 });
 		}
 
+		function goToEdit(id){
+			sessionStorage.setItem('id', id);
+			window.location.href="http://localhost/TuristMe-web-client/webclient/edituser.html";
+		}
+
 		function deleteUser(id){
 			$.ajax({
 				beforeSend: function(request) {
 			 		request.setRequestHeader("Authorization", sessionStorage.getItem("token"));
 			 	},
 			 	
-				url: 'http://localhost:8888/TuristMe-web-client/public/index.php/api/user/'+id,
+				url: 'http://localhost:80/TuristMe-web-client/public/index.php/api/user/'+id,
 
 				type: 'DELETE',
 
@@ -121,7 +149,7 @@
 
 				success : function(response) {
 					alert(response.MESSAGE);
-					window.location.href="http://localhost:8888/TuristMe-web-client/webclient/main.html";
+					window.location.href="http://localhost/TuristMe-web-client/webclient/main.html";
 				},
 
 				error : function (xhr, status) {
@@ -132,5 +160,4 @@
 			})
 		}
 	</script>
-
 </html>
