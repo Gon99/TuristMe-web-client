@@ -56,7 +56,15 @@ class UserController extends Controller
             $user = new User();
 
             $user->name = str_replace(' ', '', $request->name);
-            $user->email = $request->email;
+            if (!strpos($request->email, "@") || !strpos($request->email, ".")) 
+            {
+                return response()->json([
+                    'MESSAGE' => 'Wrong email syntax'], 400
+                );
+            } else
+            {
+                $user->email = $request->email;
+            }
 
             $users = User::where('email', $request->email)->get();
             foreach ($users as $key => $value) {
@@ -133,23 +141,24 @@ class UserController extends Controller
 
                     $user->name = $request->name;
 
-                    $users = User::where('email', $request->email)->get();
-                    foreach ($users as $key => $value) {
-                        if ($request->email == $value->email) {
-                            return response()->json([
-                                'MESSAGE' => 'The email is in use'], 401
-                            );
-                        }
+                    if (!strpos($request->email, "@") || !strpos($request->email, ".")) 
+                    {
+                        return response()->json([
+                            'MESSAGE' => 'Wrong email syntax'], 400
+                        );
+                    } else
+                    {
+                        $user->email = $request->email;
                     }
-                    $user->email = $request->email;
+
                     if (strlen($request->password) > 7)
                     {
                         $user->password = encrypt($request->password);
                     } else 
                     {
                     return response()->json([
-                            'MESSAGE' => 'The password must have more than seven characters', 411
-                        ]);
+                            'MESSAGE' => 'The password must have more than seven characters'], 411
+                        );
                     }
                     $user->save();
                     return response()->json([

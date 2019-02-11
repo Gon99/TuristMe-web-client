@@ -70,7 +70,7 @@
 
 			$.ajax({
 
-				url: 'http://localhost:80/TuristMe-web-client/public/index.php/api/user',
+				url: 'http://localhost:8888/TuristMe-web-client/public/index.php/api/user',
 
 			 	data: {
 			 		name: name,	
@@ -88,7 +88,7 @@
 			 		//No funcionaba porque no estabamos usando localhost para la peticion
 			 		//Si ponemos localhost en la URL, indicamos que se realize una petición HTTP, por lo cual estamos utilizando el servidor MAMP (php, mysql y Apache)
 			 		//Es importante indicarlo ya que si se quiere acceder de manera remota no se podrá ya que es un archivo que únicamente esta almacenado en nuestro PC
-			 		window.location.href = "http://localhost/TuristMe-web-client/webclient/main.html";
+			 		window.location.href = "http://localhost:8888/TuristMe-web-client/webclient/main.html";
 			 	},
 			 	/*.fail(function() {
 			 		console.log('desde el fail');

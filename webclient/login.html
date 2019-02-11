@@ -67,7 +67,7 @@
 
 			$.ajax({
 
-				url: 'http://localhost:80/TuristMe-web-client/public/index.php/api/login/web',
+				url: 'http://localhost:8888/TuristMe-web-client/public/index.php/api/login/web',
 
 			 	data: {	
 			 		email: email,
@@ -81,11 +81,8 @@
 				success : function(data) {
 			 		console.log(data);
 			 		sessionStorage.setItem('token', data.MESSAGE);
-			 		window.location.href = "http://localhost/TuristMe-web-client/webclient/main.html";
+			 		window.location.href = "http://localhost:8888/TuristMe-web-client/webclient/main.html";
 			 	},
-			 	/*.fail(function() {
-			 		console.log('desde el fail');
-			 	})*/
 
 			 	error : function (xhr, status) {
 			 		alert(xhr.responseJSON['MESSAGE']);

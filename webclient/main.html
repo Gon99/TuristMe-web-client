@@ -59,8 +59,8 @@
 
 	<h1>Admin panel</h1>
 	<nav>
-		<a href="http://localhost/TuristMe-web-client/webclient/createuser.html">Crear usuario</a>
-		<a href="http://localhost/TuristMe-web-client/webclient/login.html" onclick="closeSession();">Cerrar sesion</a>
+		<a href="http://localhost:8888/TuristMe-web-client/webclient/createuser.html">Crear usuario</a>
+		<a href="http://localhost:8888/TuristMe-web-client/webclient/login.html" onclick="closeSession();">Cerrar sesion</a>
 	</nav>
 	<table class="table">
 		<thead>
@@ -86,7 +86,7 @@
 		function checkLogin(){
 			var token = sessionStorage.getItem('token');
 			if (token == null) {
-				window.location.href="http://localhost/TuristMe-web-client/webclient/login.html";
+				window.location.href="http://localhost:8888/TuristMe-web-client/webclient/login.html";
 			}
 		}
 
@@ -98,7 +98,7 @@
 
 			$.ajax({
 
-				url: 'http://localhost:80/TuristMe-web-client/public/index.php/api/user',
+				url: 'http://localhost:8888/TuristMe-web-client/public/index.php/api/user',
 
 
 			 	type: 'GET',
@@ -132,7 +132,7 @@
 
 		function goToEdit(id){
 			sessionStorage.setItem('id', id);
-			window.location.href="http://localhost/TuristMe-web-client/webclient/edituser.html";
+			window.location.href="http://localhost:8888/TuristMe-web-client/webclient/edituser.html";
 		}
 
 		function deleteUser(id){
@@ -141,7 +141,7 @@
 			 		request.setRequestHeader("Authorization", sessionStorage.getItem("token"));
 			 	},
 			 	
-				url: 'http://localhost:80/TuristMe-web-client/public/index.php/api/user/'+id,
+				url: 'http://localhost:8888/TuristMe-web-client/public/index.php/api/user/'+id,
 
 				type: 'DELETE',
 
@@ -149,7 +149,7 @@
 
 				success : function(response) {
 					alert(response.MESSAGE);
-					window.location.href="http://localhost/TuristMe-web-client/webclient/main.html";
+					window.location.href="http://localhost:8888/TuristMe-web-client/webclient/main.html";
 				},
 
 				error : function (xhr, status) {

@@ -70,7 +70,7 @@
 
 			$.ajax({
 
-				url: 'http://localhost:80/TuristMe-web-client/public/index.php/api/user/'+sessionStorage.getItem('id'),
+				url: 'http://localhost:8888/TuristMe-web-client/public/index.php/api/user/'+sessionStorage.getItem('id'),
 
 				beforeSend: function(request) {
 			 		request.setRequestHeader("Authorization", sessionStorage.getItem("token"));
@@ -88,7 +88,7 @@
 
 				success : function(data) {
 			 		alert(data.MESSAGE);
-			 		window.location.href="http://localhost/TuristMe-web-client/webclient/main.html";
+			 		window.location.href="http://localhost:8888/TuristMe-web-client/webclient/main.html";
 			 	},
 
 			 	error : function (xhr, status) {
